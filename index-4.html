@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gelly Sky — AI-Enhanced Creative for Beauty, Skincare & Wellness</title>
+<meta name="description" content="Gelly Sky delivers end-to-end, performance-driven photo and video production for beauty, skincare, and wellness brands — human-directed, AI-enhanced, built to convert.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0A0A0A;
+  --dark:#131C28;       /* deep grayish-blue for dark sections */
+  --off-white:#F4F4F4;
+  --warm:#FAF0EA;
+  --skin:#F2D8D2;
+  --skin-deep:#B58C84;
+  --skin-lt:#FBF0ED;
+  --muted:#5A5A5A;
+  --bdk:rgba(0,0,0,0.09);
+  --fd:'Bebas Neue',sans-serif;
+  --fs:'Cormorant Garamond',serif;
+  --fn:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fn);color:var(--black);background:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
+
+/* CURSOR — difference blend so it auto-inverts on light/dark */
+#cur{position:fixed;z-index:9999;width:64px;height:64px;border:1px solid white;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:width .4s,height .4s,border-color .3s,background .3s;display:flex;align-items:center;justify-content:center;mix-blend-mode:difference}
+#cur-dot{width:6px;height:6px;background:white;border-radius:50%;transition:transform .2s}
+#cur-label{position:absolute;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:white;opacity:0;transition:opacity .3s;white-space:nowrap}
+body.h-link #cur{width:80px;height:80px;background:rgba(255,255,255,.18);border-color:white}
+body.h-link #cur-dot{transform:scale(0)}
+body.h-link #cur-label{opacity:1}
+@media(hover:none){body{cursor:auto}#cur{display:none}}
+
+/* NAV — difference blend: white elements appear dark on sky, light on dark bg */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:24px 64px;mix-blend-mode:difference}
+
+/* LOGO — Bebas Neue, GELLY solid + SKY outlined, matching hero kinetic style */
+.logo{font-family:var(--fd);font-size:22px;letter-spacing:.07em;text-decoration:none;display:inline-flex;align-items:baseline;gap:8px;line-height:1}
+.logo-g{color:white}
+.logo-s{color:transparent;-webkit-text-stroke:1.5px white}
+
+.nav-l{display:flex;gap:36px;list-style:none}
+.nav-l a{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
+.nav-l a:hover{color:white}
+.btn-nav{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:white;border:1px solid rgba(255,255,255,.5);padding:9px 20px;border-radius:100px;cursor:none;transition:all .2s;white-space:nowrap}
+.btn-nav:hover{background:white;color:var(--black)}
+
+/* HERO — ABSTRACT SKY */
+.hero{
+  position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:0 64px 80px;
+  background:
+    radial-gradient(ellipse 90% 70% at 20% 10%, rgba(205,225,242,0.65) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 55% at 78% 5%,  rgba(222,210,240,0.45) 0%,transparent 52%),
+    radial-gradient(ellipse 80% 55% at 50% 52%, rgba(253,240,228,0.60) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 65% at 5%  68%, rgba(245,225,216,0.40) 0%,transparent 52%),
+    radial-gradient(ellipse 45% 40% at 88% 82%, rgba(238,210,190,0.38) 0%,transparent 52%),
+    linear-gradient(170deg,#D4E3EF 0%,#DEDBEA 22%,#EAD9D3 50%,#F5EBE1 75%,#FCF7F2 100%);
+}
+.hero::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 40% 30% at 65% 30%,rgba(255,248,240,0.55) 0%,transparent 60%),
+  radial-gradient(ellipse 30% 20% at 35% 55%,rgba(200,220,240,0.40) 0%,transparent 60%);
+  pointer-events:none;animation:wispdrift 18s ease-in-out infinite alternate}
+@keyframes wispdrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(12px,-8px) scale(1.04)}}
+
+/* KINETIC — dark ink on light sky */
+.kinetic-wrap{position:absolute;top:0;left:64px;right:64px;bottom:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;overflow:hidden;pointer-events:none}
+.k-line{display:flex;align-items:center;overflow:hidden;line-height:1}
+.k-word{font-family:var(--fd);font-size:clamp(80px,14vw,200px);letter-spacing:-.01em;line-height:.88;color:var(--black);display:block;transform:translateY(110%);opacity:0;will-change:transform}
+/* SKY: solid black stroke, half original weight (2.5px) */
+.k-word.filled{-webkit-text-stroke:2.5px var(--black);color:transparent}
+.k-word.skin{color:var(--skin-deep);font-family:var(--fs);font-weight:300;font-style:italic}
+
+/* SUBCOPY under tagline — flows naturally beneath the kinetic stack, no overlap */
+.k-line-sub{margin-top:18px}
+.hero-tag-sub-text{
+  display:block;max-width:640px;
+  font-family:var(--fn);font-size:17px;font-weight:400;letter-spacing:.01em;
+  color:rgba(0,0,0,.75);line-height:1.72;
+  opacity:0;transform:translateY(14px);animation:fu .8s cubic-bezier(.16,1,.3,1) .85s forwards;
+}
+
+/* ACCESSIBILITY: visually hidden but screen-reader accessible content */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Visible, consistent focus indicator for keyboard navigation (WCAG 2.4.7) */
+a:focus-visible,button:focus-visible{outline:2px solid var(--skin-deep);outline-offset:3px}
+
+.k-line:nth-child(1) .k-word{animation:kslide .9s cubic-bezier(.16,1,.3,1) .20s forwards}
+.k-line:nth-child(2) .k-word{animation:kslide .9s cubic-bezier(.16,1,.3,1) .35s forwards}
+.k-line:nth-child(3) .k-word{animation:kslide .9s cubic-bezier(.16,1,.3,1) .50s forwards}
+@keyframes kslide{to{transform:translateY(0);opacity:1}}
+
+/* PILL */
+.hero-pill{position:absolute;top:50%;right:64px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:14px;opacity:0;animation:fu .8s 1.1s forwards}
+.pill-tag{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#2A1C18;background:rgba(242,216,210,.45);border:1px solid rgba(181,140,132,.45);padding:9px 18px;border-radius:100px;white-space:nowrap;font-weight:500}
+
+/* BOTTOM BAR */
+.hero-bar{position:relative;z-index:10;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.hero-sub{font-size:17px;line-height:1.72;color:rgba(0,0,0,.70);max-width:360px;opacity:0;animation:fu .8s 1.3s forwards}
+.hero-sub strong{font-weight:600;color:var(--black)}
+.hero-cta{opacity:0;animation:fu .8s 1.5s forwards}
+@keyframes fu{to{opacity:1;transform:translateY(0)}}
+.btn-hero{font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--off-white);background:var(--black);border:1px solid var(--black);padding:13px 28px;border-radius:100px;cursor:none;transition:all .25s;white-space:nowrap;display:inline-block}
+.btn-hero:hover{background:var(--skin-deep);border-color:var(--skin-deep)}
+
+/* WORD STRIP */
+.word-strip{background:var(--skin-lt);padding:14px 0;overflow:hidden;white-space:nowrap;border-top:1px solid rgba(181,140,132,.18);border-bottom:1px solid rgba(181,140,132,.18)}
+.ws-track{display:inline-flex;animation:wsscroll 22s linear infinite}
+.ws-item{font-family:var(--fd);font-size:28px;letter-spacing:.06em;color:var(--black);padding:0 32px}
+@keyframes wsscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SPLIT */
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.split-left{background:var(--warm);padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
+.split-right{background:var(--dark);padding:100px 64px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.split-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(242,216,210,.16) 0%,transparent 65%)}
+
+.big-num{font-family:var(--fd);font-size:clamp(100px,14vw,180px);letter-spacing:.02em;line-height:.9;color:rgba(0,0,0,.05);margin-bottom:-20px}
+.split-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.split-h{font-family:var(--fs);font-size:clamp(36px,4vw,52px);font-weight:300;line-height:1.15;color:var(--black);margin-bottom:28px}
+.split-h em{font-style:italic}
+.split-body{font-size:15px;line-height:1.78;color:#555;margin-bottom:22px}
+.split-rule{border-top:1px solid var(--bdk);padding-top:22px;margin-top:22px;font-size:15px;line-height:1.7;color:#5A5A5A;font-style:italic;font-family:var(--fs)}
+
+.split-h-white{font-family:var(--fs);font-size:clamp(36px,4vw,52px);font-weight:300;line-height:1.15;color:var(--off-white);margin-bottom:28px;position:relative;z-index:1}
+.split-h-white em{font-style:italic;color:var(--skin)}
+
+/* WORK */
+.fpo-wc{position:absolute;bottom:10px;left:10px;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+
+/* PROOF OF CONCEPT — split-right card treatment */
+.poc-tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.poc-card{border-radius:4px;position:relative;overflow:hidden}
+.poc-swatches{display:flex;align-items:center;gap:8px;margin-top:14px}
+.poc-dot{width:16px;height:16px;border-radius:50%;display:inline-block;border:1px solid rgba(255,255,255,.25)}
+.poc-swatch-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-left:4px}
+
+/* SERVICES */
+.svc-type{background:var(--off-white);padding:110px 64px}
+.svc-t-head{max-width:1240px;margin:0 auto 64px}
+.svc-t-grid{max-width:1240px;margin:0 auto}
+.svc-row{display:grid;grid-template-columns:80px 1fr 1.5fr;gap:40px;align-items:start;padding:36px 0;border-top:1px solid var(--bdk)}
+.svc-row:last-child{border-bottom:1px solid var(--bdk)}
+.svc-num{font-family:var(--fd);font-size:64px;color:#ddd8d4;line-height:1}
+.svc-name{font-family:var(--fs);font-size:28px;font-weight:400;color:var(--black);padding-top:8px}
+.svc-desc{font-size:14px;line-height:1.78;color:#555;padding-top:10px}
+
+/* STATS */
+.stats-type{background:var(--skin);padding:80px 64px}
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:1240px;margin:0 auto;text-align:center}
+
+/* ABOUT — short founder-story block */
+.about-type{background:var(--warm);padding:90px 64px;text-align:center}
+.about-inner{max-width:740px;margin:0 auto}
+.about-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.about-copy{font-family:var(--fs);font-size:clamp(19px,2.3vw,26px);font-weight:300;line-height:1.55;color:var(--black)}
+.about-copy em{font-style:italic;color:var(--skin-deep)}
+.stn{font-family:var(--fd);font-size:72px;letter-spacing:.02em;line-height:1;color:var(--black);margin-bottom:8px}
+.stl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.60)}
+
+/* LEAD */
+.lead{background:var(--dark);padding:120px 64px;text-align:center}
+.lead-kw{font-family:var(--fd);font-size:clamp(60px,9vw,120px);letter-spacing:.03em;line-height:.9;color:var(--off-white);margin-bottom:16px;overflow:hidden}
+.lead-kw span{display:block;transform:translateY(100%);opacity:0;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .7s ease}
+.lead-kw.on span{transform:translateY(0);opacity:1}
+.lead-kw.on span:nth-child(2){transition-delay:.12s}
+.lead-sub{font-size:15px;line-height:1.68;color:rgba(255,255,255,.42);max-width:440px;margin:24px auto 48px}
+.lead-h{font-family:var(--fs);font-weight:300;font-size:clamp(32px,4.3vw,54px);line-height:1.28;color:var(--off-white);max-width:680px;margin:0 auto 48px}
+.form{max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fi{width:100%;padding:14px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:4px;font-size:14px;color:var(--off-white);font-family:var(--fn);outline:none;transition:border-color .2s,box-shadow .2s;appearance:none;cursor:none}
+.fi:focus{border-color:var(--skin);box-shadow:0 0 0 3px rgba(242,216,210,.35)}
+.fi::placeholder{color:rgba(255,255,255,.55)}
+.fi:focus{border-color:var(--skin)}
+select.fi option{background:var(--dark);color:var(--off-white)}
+.fi.full{grid-column:1/-1}
+.btn-sub{width:100%;padding:16px;background:var(--off-white);border:none;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;cursor:none;color:var(--black);font-family:var(--fn);transition:background .2s,color .2s;margin-top:6px}
+.btn-sub:hover{background:var(--skin);color:var(--black)}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.08);padding:36px 64px;display:flex;align-items:center;justify-content:space-between}
+.fl{font-family:var(--fs);font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.36);text-decoration:none}
+.fn-l{display:flex;gap:28px;list-style:none}
+.fn-l a{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s}
+.fn-l a:hover{color:var(--off-white)}
+.fc{font-size:11px;color:rgba(255,255,255,.55)}
+
+/* SCROLL REVEAL */
+.rv{opacity:0;transform:translateY(44px);transition:opacity .85s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:20px 24px}.nav-l{display:none}
+  .hero{padding:0 24px 64px}
+  .kinetic-wrap{left:24px;right:24px}
+  .hero-pill{position:relative;top:auto;right:auto;transform:none;flex-direction:row;flex-wrap:wrap;opacity:1;animation:none;margin-bottom:32px}
+  .split{grid-template-columns:1fr}
+  .split-left,.split-right{padding:72px 28px;min-height:auto}
+  .svc-type,.stats-type,.about-type,.lead{padding:72px 28px}
+  .svc-row{grid-template-columns:60px 1fr}
+  .svc-desc{grid-column:2}
+  .stats-g{grid-template-columns:1fr 1fr}
+  .fr{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:28px 24px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"><div id="cur-dot"></div><div id="cur-label">View</div></div>
+
+<nav>
+  <!-- Logo mirrors hero treatment: GELLY solid + SKY outlined in Bebas Neue -->
+  <a href="/" class="logo" aria-label="Gelly Sky home">
+    <span class="logo-g">GELLY</span><span class="logo-s">SKY</span>
+  </a>
+  <ul class="nav-l">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn-nav">&#10022; Book a Strategy Session</a>
+</nav>
+
+<!-- HERO: ABSTRACT SKY + KINETIC TYPE -->
+<section class="hero">
+  <h1 class="sr-only">Gelly Sky &mdash; Aesthetic Intelligence in the Age of AI. Where taste meets tech-enhanced creative, at the speed of now. An AI-enhanced creative agency for beauty, skincare and wellness brands.</h1>
+  <div class="kinetic-wrap" aria-hidden="true">
+    <div class="k-line"><span class="k-word">GELLY</span></div>
+    <div class="k-line"><span class="k-word filled">SKY</span></div>
+    <div class="k-line"><span class="k-word skin" style="font-size:clamp(32px,5.5vw,82px);transform:translateY(110%);opacity:0;animation:kslide .9s cubic-bezier(.16,1,.3,1) .65s forwards">Aesthetic Intelligence in the Age of AI</span></div>
+    <div class="k-line k-line-sub"><span class="hero-tag-sub-text">Where taste meets tech-enhanced creative &mdash; at the speed of now.</span></div>
+  </div>
+
+  <div class="hero-pill">
+    <span class="pill-tag">Beauty &middot; Skincare &middot; Wellness</span>
+  </div>
+
+  <div class="hero-bar">
+    <p class="hero-sub"><strong>Performance-driven creative, end to end</strong> &mdash; human-directed, AI-enhanced, for beauty, skincare and wellness brands.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-hero">Book a Strategy Session</a>
+    </div>
+  </div>
+</section>
+
+<!-- WORD STRIP -->
+<div class="word-strip" aria-hidden="true">
+  <div class="ws-track">
+    <span class="ws-item">PHOTO</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">VIDEO</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">AI EXPANSION</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">GO-TO-MARKET</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">BEAUTY</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">SKINCARE</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">WELLNESS</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">PHOTO</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">VIDEO</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">AI EXPANSION</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">GO-TO-MARKET</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">BEAUTY</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">SKINCARE</span><span class="ws-item">&middot;</span>
+    <span class="ws-item">WELLNESS</span><span class="ws-item">&middot;</span>
+  </div>
+</div>
+
+<!-- SPLIT -->
+<div class="split">
+  <div class="split-left">
+    <p class="split-label rv">What we do</p>
+    <h2 class="split-h rv">Creative<br><em>Expansion.</em></h2>
+    <p class="split-body rv">We concept, art direct, and produce photo and video assets that are distinctly yours &mdash; then use AI to scale them across every channel without losing your brand identity.</p>
+    <p class="split-rule rv">&ldquo;20+ years of creative direction in beauty and wellness &mdash; we know what actually moves your customer.&rdquo;</p>
+    <div style="margin-top:36px" class="rv"><a href="#contact" style="font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--black);text-decoration:none;border-bottom:1px solid rgba(0,0,0,.3);padding-bottom:4px">Book a Strategy Session &rarr;</a></div>
+  </div>
+  <div class="split-right">
+    <div style="position:relative;z-index:1">
+      <p class="poc-tag rv">Proof of Concept &middot; Baked Beauty &times; Gelly Sky</p>
+      <div class="poc-card" style="aspect-ratio:16/9;margin-bottom:10px;background:linear-gradient(155deg,#F2E4D8 0%,#C2683F 50%,#2B2421 100%)"><span class="fpo-wc">FPO &mdash; Hero Wide Shot</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div class="poc-card" style="aspect-ratio:1;background:linear-gradient(160deg,#FBF6EF 0%,#F2E4D8 45%,#E8C9AE 100%)"><span class="fpo-wc" style="color:rgba(0,0,0,.6)">FPO &mdash; Studio Product Shot</span></div>
+        <div class="poc-card" style="aspect-ratio:1;background:linear-gradient(145deg,#E8957A 0%,#C2683F 45%,#2B2421 100%)"><span class="fpo-wc">FPO &mdash; Lifestyle: Mirror &amp; Palms</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="poc-card" style="aspect-ratio:1;background:linear-gradient(150deg,#C76B6B 0%,#8B6F5C 60%,#2B2421 100%)"><span class="fpo-wc">FPO &mdash; In Situ 01</span></div>
+        <div class="poc-card" style="aspect-ratio:1;background:linear-gradient(150deg,#E8C9AE 0%,#C2683F 55%,#3a2018 100%)"><span class="fpo-wc" style="color:rgba(0,0,0,.6)">FPO &mdash; In Situ 02</span></div>
+        <div class="poc-card" style="aspect-ratio:1;background:linear-gradient(150deg,#F2E4D8 0%,#C76B6B 55%,#2B2421 100%)"><span class="fpo-wc">FPO &mdash; In Situ 03</span></div>
+      </div>
+      <div class="poc-swatches">
+        <span class="poc-dot" style="background:#F2E4D8" title="Affresco"></span>
+        <span class="poc-dot" style="background:#E8957A" title="Tramonto"></span>
+        <span class="poc-dot" style="background:#C2683F" title="Terracotta"></span>
+        <span class="poc-dot" style="background:#C76B6B" title="Campari"></span>
+        <span class="poc-dot" style="background:#8B6F5C" title="Ombra"></span>
+        <span class="poc-dot" style="background:#2B2421" title="Notte"></span>
+        <span class="poc-swatch-label">Dolce Vita &mdash; Micro Palm Palette</span>
+      </div>
+    </div>
+    <p class="split-h-white rv" style="margin-top:28px;font-size:clamp(26px,2.5vw,36px)">We don&rsquo;t replace the shoot. <em>We supercharge it.</em></p>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="svc-type" id="services">
+  <div class="svc-t-head">
+    <p class="split-label rv">What we offer</p>
+    <h2 style="font-family:var(--fd);font-size:clamp(52px,6.5vw,88px);letter-spacing:.03em;line-height:.95;color:var(--black)" class="rv">FROM LAUNCH<br>TO ALWAYS-ON</h2>
+  </div>
+  <div class="svc-t-grid">
+    <div class="svc-row rv"><div class="svc-num">01</div><div class="svc-name">Photo Production</div><div class="svc-desc">Hero product photography and campaign imagery &mdash; art directed for your brand, AI-expanded for every format and channel.</div></div>
+    <div class="svc-row rv"><div class="svc-num">02</div><div class="svc-name">Video Campaigns</div><div class="svc-desc">Full-concept video production from brand films to social-first content. One shoot, strategically multiplied into infinite variations.</div></div>
+    <div class="svc-row rv"><div class="svc-num">03</div><div class="svc-name">Go-to-Market</div><div class="svc-desc">Complete launch packages &mdash; from the first product image to the full campaign rollout. Strategy and execution under one roof.</div></div>
+    <div class="svc-row rv"><div class="svc-num">04</div><div class="svc-name">AI Asset Expansion</div><div class="svc-desc">Take your existing shoot and multiply it &mdash; new angles, colorways, formats, and environments without reshooting.</div></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-type">
+  <div class="stats-g">
+    <div class="rv"><div class="stn" data-count="20" data-sfx="+">0</div><div class="stl">Years Beauty Creative</div></div>
+    <div class="rv d1"><div class="stn" data-count="2" data-sfx="x">0</div><div class="stl">More Output Per Shoot</div></div>
+    <div class="rv d2"><div class="stn" data-count="50" data-sfx="%">0</div><div class="stl">Faster to Market</div></div>
+    <div class="rv d3"><div class="stn">E2E</div><div class="stl">Brief to Launch</div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about-type">
+  <div class="about-inner">
+    <p class="about-label rv">Who We Are</p>
+    <p class="about-copy rv">We met inside a brand on the rise &mdash; and never stopped building together. Ten years, countless campaigns, and one shared belief: that the most powerful creative doesn&rsquo;t just look beautiful, it moves people. That&rsquo;s why we started Gelly Sky &mdash; creative instinct at the core, AI as the multiplier. <em>Human taste, technically amplified.</em></p>
+  </div>
+</div>
+
+<!-- LEAD GEN -->
+<section class="lead" id="contact">
+  <p class="lead-h rv">Tell us about your next campaign. We&rsquo;ll show you what&rsquo;s possible.</p>
+  <form class="form rv" action="#" method="POST">
+    <div class="fr">
+      <div>
+        <label class="sr-only" for="f-name">Your name</label>
+        <input class="fi" id="f-name" type="text" name="name" placeholder="Your name" required>
+      </div>
+      <div>
+        <label class="sr-only" for="f-email">Email address</label>
+        <input class="fi" id="f-email" type="email" name="email" placeholder="Email address" required>
+      </div>
+    </div>
+    <label class="sr-only" for="f-brand">Brand name</label>
+    <input class="fi full" id="f-brand" type="text" name="brand" placeholder="Brand name" required>
+    <label class="sr-only" for="f-project">What are you working on?</label>
+    <select class="fi full" id="f-project" name="project"><option value="" disabled selected>What are you working on?</option><option>Product launch</option><option>Brand refresh</option><option>Always-on content</option><option>Campaign creative</option><option>Something else</option></select>
+    <label class="sr-only" for="f-msg">Tell us more (optional)</label>
+    <textarea class="fi full" id="f-msg" name="msg" rows="3" placeholder="Tell us more (optional)" style="resize:vertical"></textarea>
+    <button type="submit" class="btn-sub">Book a Strategy Session &rarr;</button>
+  </form>
+</section>
+
+<footer>
+  <a href="/" class="logo" aria-label="Gelly Sky home"><span class="logo-g">GELLY</span><span class="logo-s">SKY</span></a>
+  <ul class="fn-l"><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul>
+  <p class="fc">&copy; 2025 Gelly Sky. All rights reserved.</p>
+</footer>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Gelly Sky","description":"AI-enhanced creative agency delivering end-to-end photo, video, and content production for beauty, skincare, and wellness brands.","serviceType":["Creative Direction","Photo Production","Video Production","AI Asset Expansion","Go-to-Market Creative"],"areaServed":"US","knowsAbout":["Beauty Photography","Skincare Campaigns","Wellness Content","AI-Enhanced Creative","Product Launch Creative"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does an AI-enhanced creative agency do?","acceptedAnswer":{"@type":"Answer","text":"An AI-enhanced creative agency like Gelly Sky combines traditional photo and video production with AI tools to scale creative assets faster and more efficiently without losing brand identity or creative quality."}},{"@type":"Question","name":"How is Gelly Sky different from a traditional creative agency?","acceptedAnswer":{"@type":"Answer","text":"Gelly Sky brings 20+ years of beauty and wellness creative direction combined with AI expansion capabilities, meaning one shoot becomes an entire campaign across every channel and format."}},{"@type":"Question","name":"What industries does Gelly Sky serve?","acceptedAnswer":{"@type":"Answer","text":"Gelly Sky specializes in beauty, skincare, and wellness brands, from go-to-market product launches to always-on content systems."}}]}
+</script>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px';
+  cur.style.top  = my + 'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('h-link'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('h-link'));
+});
+
+// SCROLL REVEAL
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: .12 });
+document.querySelectorAll('.rv,.lead-kw').forEach(el => io.observe(el));
+
+// COUNT-UP
+const co = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, t = +el.dataset.count, sfx = el.dataset.sfx || '', s = performance.now();
+    const step = n => {
+      const p = Math.min((n - s) / 1400, 1), v = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(v * t) + sfx;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    co.unobserve(el);
+  });
+}, { threshold: .5 });
+document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+</script>
+</body>
+</html>
